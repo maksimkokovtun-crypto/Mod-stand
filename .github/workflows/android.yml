@@ -1,6 +1,10 @@
-name: Android CI
+name: Build Mod Menu
 
-on: [push]
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
 
 jobs:
   build:
@@ -19,17 +23,17 @@ jobs:
       uses: android-actions/setup-android@v3
 
     - name: Generate Gradle Wrapper
-      run: gradle wrapper
+      run: gradle wrapper --gradle-version 8.5
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
+    - name: Build APK with NDK
       run: ./gradlew assembleRelease
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ModMenu-App
-        path: app/build/outputs/apk/release/
+        name: ModMenu-Release
+        path: app/build/outputs/apk/release/*.apk
         
